@@ -32,8 +32,7 @@ app.get('/about-redirect',(req,res)=>{
     res.redirect('/about');
 })
 
-//404 page
-//should always be at the bottom
+//404 page should always be at the bottom
 //express doesn't realise that this is an error
 //so we have to set status manually 
 app.use((req,res)=>{
