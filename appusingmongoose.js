@@ -161,4 +161,105 @@ app.get('/blogs/create',(req,res)=>{
 app.use((req,res)=>{
     res.status(404).render('404',{title: '404'});
 })
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const express = require('express');
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+const Blog = require('./models/blog');
+
+
+//express app
+const app=express();
+
+//connect to MongoDB
+const dbURI = "mongodb+srv://abantika-saha:27A64b528@@cluster0.82snl.mongodb.net/Cluster0";
+
+mongoose.connect(dbURI,{ useNewUrlParser: true, useUnifiedTopology: true})
+ .then((result)=>app.listen(3000))
+ .catch((err)=>console.log(err));
+
+//register view engine
+app.set('view engine', 'ejs');
+
+// middleware & static files
+app.use(express.static('public'));
+app.use(express.urlencoded({extended: true})); 
+app.use(morgan('dev'));
+
+
+app.get('/',(req,res)=>{
+    res.redirect('/blogs');
+});
+
+app.get('/about',(req,res)=>{
+    res.render('about',{title: 'About'});
+});
+
+//create
+app.get('/blogs/create',(req,res)=>{
+    res.render('create',{title: 'Create a new blog'});
+})
+
+// //redirecting
+// app.get('/about-redirect',(req,res)=>{
+//     res.redirect('/about');
+// })
+
+//blog routes
+app.get('/blogs',(req,res)=>{
+    Blog.find().sort({createdAt:-1}) //sorts newest first
+    .then((result)=>{
+        res.render('index',{title: 'All Blogs', blogs: result})
+    })
+    .catch((err)=>{
+        console.log(err);
+    })
+});
+
+//handling post request
+app.post('/blogs', (req, res) => {
+    // console.log(req.body);
+    const blog = new Blog(req.body); //req.body contains all the info in req format
+    blog.save()
+      .then(result => { //asynchronus, thats why
+        res.redirect('/blogs'); //because we want the new blog to be added in all blogs page
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
+
+//to extract id from url
+//then search the blog using id
+//to show the details of the blog when i click on it
+app.get('/blogs/:id', (req, res) => {
+    const id = req.params.id;
+    Blog.findById(id)
+    .then(result => {
+       res.render('details', { blog: result, title: 'Blog Details' });
+    })
+    .catch(err => {
+       console.log(err);
+    });
+});
+
+//for deleting a blog
+//for delete script we used ajax
+//when we use ajax, e cannot use redirect
+//we will have to use json
+app.delete('/blogs/:id', (req, res) => {
+    const id = req.params.id;
+    
+    Blog.findByIdAndDelete(id)
+      .then(result => {
+        res.json({ redirect: '/blogs' });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  });
+
+app.use((req,res)=>{
+    res.status(404).render('404',{title: '404'});
+})
 
