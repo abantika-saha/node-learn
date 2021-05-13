@@ -12,9 +12,13 @@
 
         <% if(blogs.length>0){ %>
             <% blogs.forEach(blog=>{ %> 
-            <h3 class="title"><%= blog.title %> </h3>
-            <p class="snippet"><%= blog.snippet %> </p>
-            <% }) %> 
+            <!-- we get id of the blog with it's url
+            later we will extract the id from url     -->
+            <a class="single" href="/blogs/<%= blog._id %>"></a>
+              <h3 class="title"><%= blog.title %> </h3>
+              <p class="snippet"><%= blog.snippet %> </p>
+            </a>
+        <% }) %> 
         <% } else { %> 
            <p>No blogs present</p> 
         <% } %> 
