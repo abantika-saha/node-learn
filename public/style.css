@@ -54,20 +54,43 @@
           margin-left: 20px;
         }
         /* index styles */
+        .Blogs a{
+          display: block;
+          margin: 40px 0;
+          padding-left: 30px;
+          border-left: 6px solid rgb(221, 78, 107);
+        }
+        .Blogs a:hover h3{
+          color: rgb(226, 74, 104);
+        }
         /* details styles */
+        .details{
+          position: relative;
+        }
+        .Delete{
+          position: absolute;
+          top: 0;
+          right: 0;
+          border-radius: 50%;
+          padding: 8px;
+        }
+        .Delete:hover{
+          cursor: pointer;
+          box-shadow: 1px 2px 3px rgba(0,0,0,0.2);
+        }
         /* create styles */
-        .Create-Blog form{
+        .create-blog form{
           max-width: 400px;
           margin: 0 auto;
         }
-        .Create-Blog input,
-        .Create-Blog textarea{
+        .create-blog input,
+        .create-blog textarea{
           display: block;
           width: 100%;
           margin: 10px 0;
           padding: 8px;
         }
-        .Create-Blog label{
+        .create-blog label{
           display: block;
           margin-top: 24px;
         }
